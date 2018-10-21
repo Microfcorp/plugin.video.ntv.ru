@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="plugin.video.ntv.ru" version="0.1.1" name="НТВ" provider-name="vl.maksime">
+<addon id="plugin.video.ntv.ru" version="0.1.3~beta" name="НТВ" provider-name="MicrofCorp">
     <requires>
         <import addon="xbmc.python" version="2.19.0"/>
         <import addon="script.module.requests"/>
         <import addon="script.module.simpleplugin3"/>
+        <import addon="script.module.simple.downloader"/>
     </requires>
     <extension point="xbmc.python.pluginsource" library="default.py">
         <provides>video</provides>
@@ -22,8 +23,8 @@
         <website>http://www.ntv.ru/</website>
         <email>vl.maksime@gmail.com</email>
         <source>https://github.com/vlmaksime/plugin.video.ntv.ru</source>
-        <news>v0.1.1 (2018-02-25)[CR]- Публичный релиз</news>
-        <assets>
+        <news>v0.1.3 (2018-08-19)[CR]- Релиз от MicrofCorp</news>
+	<assets>
             <icon>icon.png</icon>
         </assets>
     </extension>

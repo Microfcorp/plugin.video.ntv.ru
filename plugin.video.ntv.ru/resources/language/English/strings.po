@@ -14,6 +14,10 @@ msgctxt "#30001"
 msgid "Search"
 msgstr ""
 
+msgctxt "#55555"
+msgid "hello"
+msgstr "Helloy"
+
 msgctxt "#30010"
 msgid "Episode"
 msgstr ""
@@ -42,16 +46,9 @@ msgctxt "#30016"
 msgid "Empty"
 msgstr ""
 
+#Part
 msgctxt "#30017"
-msgid "Sort"
-msgstr ""
-
-msgctxt "#30018"
-msgid "By release date"
-msgstr ""
-
-msgctxt "#30019"
-msgid "By alphabet"
+msgid "pt."
 msgstr ""
 
 msgctxt "#30041"
@@ -88,4 +85,12 @@ msgstr ""
 
 msgctxt "#30212"
 msgid "High"
+msgstr ""
+
+msgctxt "#30215"
+msgid "Subtitles"
+msgstr ""
+
+msgctxt "#30301"
+msgid "Download"
 msgstr ""

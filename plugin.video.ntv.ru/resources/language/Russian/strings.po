@@ -42,17 +42,10 @@ msgctxt "#30016"
 msgid "Empty"
 msgstr "Пусто"
 
+#Part
 msgctxt "#30017"
-msgid "Sort"
-msgstr "Порядок"
-
-msgctxt "#30018"
-msgid "By release date"
-msgstr "По дате выхода"
-
-msgctxt "#30019"
-msgid "By alphabet"
-msgstr "По алфавиту"
+msgid "pt."
+msgstr "ч."
 
 msgctxt "#30041"
 msgid "Connection error"
@@ -82,10 +75,26 @@ msgctxt "#30210"
 msgid "Video Quality"
 msgstr "Качество видео"
 
+msgctxt "#30555"
+msgid "Helloy title"
+msgstr "Приветственное сообщение"
+
+msgctxt "#30556"
+msgid "Downloading folder"
+msgstr "Путь для загрузки"
+
 msgctxt "#30211"
 msgid "Low"
-msgstr "Низкое"
+msgstr "Низкое (576i)"
 
 msgctxt "#30212"
 msgid "High"
-msgstr "Высокое"
+msgstr "Высокое (1080p)"
+
+msgctxt "#30215"
+msgid "Subtitles"
+msgstr "Субтитры"
+
+msgctxt "#30301"
+msgid "Download"
+msgstr "Скачать"
