@@ -4,4 +4,6 @@
     <setting type="sep"/>
     <setting label="30210" type="enum" id="video_quality" lvalues="30211|30212" default="1"/>
     <setting label="30215" type="bool" id="use_subtitles" default="false" />
+	<setting type="sep"/>
+	<setting label="30216" type="bool" id="use_love" default="true" />
 </settings>

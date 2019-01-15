@@ -1,7 +1,7 @@
 # Kodi Media Center language file
 # Addon Name: Russia 1
-# Addon id: plugin.video.russiatv1
-# Addon Provider: vl.maksime
+# Addon id: plugin.video.ntv
+# Addon Provider: MicrofCorp
 
 msgid ""
 msgstr ""
@@ -77,12 +77,16 @@ msgstr "Качество видео"
 
 msgctxt "#30211"
 msgid "Low"
-msgstr "Низкое"
+msgstr "Низкое (576p)"
 
 msgctxt "#30212"
 msgid "High"
-msgstr "Высокое"
+msgstr "Высокое (1080p)"
 
 msgctxt "#30215"
 msgid "Subtitles"
 msgstr "Субтитры"
+
+msgctxt "#30216"
+msgid "Loves authors"
+msgstr "Любимое автора"

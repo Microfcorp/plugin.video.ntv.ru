@@ -55,7 +55,7 @@ def _list_root():
         genres = []
 
     url = plugin.url_for('play_live')
-    list_item = {'label': 'Live',
+    list_item = {'label': 'Прямая трансляция',
                  'url': url,
                  'icon': plugin.icon,
                  'fanart': plugin.fanart,
@@ -65,17 +65,51 @@ def _list_root():
                  'is_playable': True,
                  }
     yield list_item
+    
+    if plugin.get_setting('use_love'):
+        url = plugin.url_for('program_seasons', prog_id='Muhtar')
+        list_item = {'label': 'Муханька',
+                     'url': url,
+                     'icon': plugin.icon,
+                     'fanart': plugin.fanart,
+                     'content_lookup': False,
+                     'is_folder': True,
+                     'is_playable': False,
+                     }
+        yield list_item
+        
+        url = plugin.url_for('program_seasons', prog_id='Morskie_diavoly')
+        list_item = {'label': 'Батя',
+                     'url': url,
+                     'icon': plugin.icon,
+                     'fanart': plugin.fanart,
+                     'content_lookup': False,
+                     'is_folder': True,
+                     'is_playable': False,
+                     }
+        yield list_item
+        
+        url = plugin.url_for('program_seasons', prog_id='Prokurorskaya_proverka')
+        list_item = {'label': 'Прокуроры',
+                     'url': url,
+                     'icon': plugin.icon,
+                     'fanart': plugin.fanart,
+                     'content_lookup': False,
+                     'is_folder': True,
+                     'is_playable': False,
+                     }
+        yield list_item
 
-    # url = plugin.url_for('newss')
-    # list_item = {'label': 'News',
-                 # 'url': url,
-                 # 'icon': plugin.icon,
-                 # 'fanart': plugin.fanart,
-                 # 'content_lookup': False,
-                 # 'is_folder': True,
-                 # 'is_playable': False,
-                 # }
-    # yield list_item
+    url = plugin.url_for('fullnews')
+    list_item = {'label': 'Новости',
+                 'url': url,
+                 'icon': plugin.icon,
+                 'fanart': plugin.fanart,
+                 'content_lookup': False,
+                 'is_folder': True,
+                 'is_playable': False,
+                 }
+    yield list_item
 
     for genre in genres:
         url = plugin.url_for('genre', genre_title=genre['title'])
@@ -87,59 +121,53 @@ def _list_root():
                      }
         yield list_item
     
-    result = []
-    for news in _api.get_newss():
-        result.append(news)
-    
-    for news in result:
-        #_show_notification(news['title'])
-        if news.get('video_list') is not None:
-            url = plugin.url_for('news', n_id=news['video_list'][0]['hi_video'])
-            #_show_notification(str(__handle__))
-            list_item = {'label': news['title'],
-                 'info': {'video': {
-                                    # 'country': country,
-                                    'title': news['title'],
-                                    'originaltitle': news['title'],
-                                    'plotoutline': news['lead'],	
-                                    'plot': news['lead'],									
-                                    }
-                          },
-                 'art': {'poster': news['img'],
-                         },
-                 'fanart': plugin.fanart,
-                 'thumb': news['img'],
-                 'content_lookup': False,
-                 'is_folder': False,
-                 'is_playable': True,
-                 'url': url,
-                 'path': str(news['video_list'][0]['hi_video']),
-                 }				 
-            #_show_notification(list_item)
-            #yield list_item
-        else:
-            url = plugin.url_for('news', n_id=news['img'])
-            #_show_notification(news['img'])
-            list_item = {'label': news['title'],
-                 'info': {'video': {
-                                    # 'country': country,
-                                    'title': news['title'],
-                                    'originaltitle': news['title'],
-                                    'plotoutline': news['lead'],
-                                    'plot': news['lead'],									
-                                    }
-                          },
-                 'art': {'poster': news['img'],
-                         },
-                 'fanart': plugin.fanart,
-                 'thumb': news['img'],
-                 'content_lookup': False,
-                 'is_folder': False,
-                 'is_playable': True,
-                 'url': url,
-                 'path': news['img'],
-                 }
-        yield list_item
+    # for news in _api.get_newss():
+        # if news.get('video_list') is not None:
+            # url = plugin.url_for('news', n_id=news['video_list'][0]['hi_video'])
+            # list_item = {'label': news['title'],
+                 # 'info': {'video': {
+                                    # # 'country': country,
+                                    # 'title': news['title'],
+                                    # 'originaltitle': news['title'],
+                                    # 'plotoutline': news['lead'],	
+                                    # 'plot': 'ВИДЕО \n'+news['lead'],
+									# 'timestamp': float(news['video_list'][0]['ts']) / 1000
+                                    # ,
+                                    # 'duration': news['video_list'][0]['tt'],
+                                    # }
+                          # },
+                 # 'art': {'poster': news['img'],
+                         # },
+                 # 'fanart': plugin.fanart,
+                 # 'thumb': news['img'],
+                 # 'content_lookup': False,
+                 # 'is_folder': False,
+                 # 'is_playable': True,
+                 # 'url': url,
+                 # 'path': str(news['video_list'][0]['hi_video']),
+                 # }
+        # else:
+            # url = plugin.url_for('news', n_id=news['img'])
+            # list_item = {'label': news['title'],
+                 # 'info': {'video': {
+                                    # # 'country': country,
+                                    # 'title': news['title'],
+                                    # 'originaltitle': news['title'],
+                                    # 'plotoutline': news['lead'],
+                                    # 'plot': 'ФОТО \n'+news['lead'],									
+                                    # }
+                          # },
+                 # 'art': {'poster': news['img'],
+                         # },
+                 # 'fanart': plugin.fanart,
+                 # 'thumb': news['img'],
+                 # 'content_lookup': False,
+                 # 'is_folder': False,
+                 # 'is_playable': True,
+                 # 'url': url,
+                 # 'path': news['img'],
+                 # }
+        # yield list_item
     
     # url = plugin.url_for('search')
     # list_item = {'label': _('Search'),
@@ -163,6 +191,34 @@ def genre(genre_title):
 
     plugin.create_directory(_list_programs(programs_info, genre_title), content='movies', category=programs_info['title'], update_listing=update_listing)
 
+@plugin.route('/fullnews')
+def fullnews():
+    params = {'offset': plugin.params.offset or 0,
+              'limit': plugin.params.limit or plugin.get_setting('limit'),
+              }
+    update_listing = (params['offset'] > 0)
+
+    plugin.create_directory(_list_fullness())
+
+@plugin.route('/maxnews/<n_type>')
+def maxnews(n_type):
+    params = {'offset': plugin.params.offset or 0,
+              'limit': plugin.params.limit or plugin.get_setting('limit'),
+              }
+    update_listing = (params['offset'] > 0)
+    
+    maxinews_info = {}
+    
+    if n_type == '0':
+        maxinews_info = _api.get_newss_maxi()
+    elif n_type == '1':
+        maxinews_info = _api.get_newss_sport()
+    elif n_type == '2':
+        maxinews_info = _api.get_newss()
+        
+    
+    plugin.create_directory(_list_maxiness(maxinews_info), content='episodes', category='News', update_listing=update_listing)
+
 @plugin.route('/news/<n_id>')		
 def news(n_id):
     list_item = {
@@ -170,7 +226,88 @@ def news(n_id):
                  }
     plugin.resolve_url(list_item)
     #xbmc.executebuiltin('PlayMedia({})'.format(n_id))
-	
+
+def _list_fullness():
+      
+    url2 = plugin.url_for('maxnews', n_type='2')
+    list_item = {'label': 'Горячие новости',
+                 'url': url2,
+                 'icon': plugin.icon,
+                 'fanart': plugin.fanart,
+                 'content_lookup': False,
+                 'is_folder': True,
+                 'is_playable': False,
+                 }
+    yield list_item
+    
+    url = plugin.url_for('maxnews', n_type='0')
+    list_item = {'label': 'ЧП',
+                 'url': url,
+                 'icon': plugin.icon,
+                 'fanart': plugin.fanart,
+                 'content_lookup': False,
+                 'is_folder': True,
+                 'is_playable': False,
+                 }
+    yield list_item
+    
+    url1 = plugin.url_for('maxnews', n_type='1')
+    list_item = {'label': 'Спорт',
+                 'url': url1,
+                 'icon': plugin.icon,
+                 'fanart': plugin.fanart,
+                 'content_lookup': False,
+                 'is_folder': True,
+                 'is_playable': False,
+                 }
+    yield list_item
+
+def _list_maxiness(data):
+
+    mediatype = 'episode'
+    for program in data:
+        
+        if program.get('video_list') is not None:
+            program['video'] = program['video_list'][0]
+        
+        if program.get('video') is not None:
+            url = plugin.url_for('news', n_id=program['video']["hi_video"])
+            ts = program['video']["ts"]
+            tt = program['video']["tt"]
+        else:
+            url = plugin.url_for('news', n_id=program['img'])
+            ts = program["ts"]
+            tt = 0
+        st_time = time.gmtime(float(ts) / 1000)
+        list_item = {'label': program['title'],
+                     'info': {'video': {  # 'date': date,
+                                        # 'country': country,
+                                        # 'year': year,
+                                        'title': program['title'],
+                                        'originaltitle': program['title'],
+                                        'sorttitle': program['title'],
+                                        'plotoutline': program['lead'],
+                                        'plot': program['lead'],
+                                        'duration': tt,
+                                        'premiered': time.strftime('%Y-%m-%d', st_time),
+                                        'dateadded': time.strftime('%Y-%m-%d %H:%M:%S', st_time),
+                                        # 'director': body.get('director', []),
+                                        # 'writer': body.get('writer', []),
+                                        # 'credits': body.get('credits', []),
+                                        'mediatype': mediatype,
+                                        }
+                              },
+                     'art': {'poster': program['img'],
+                             },
+                     'fanart': plugin.fanart,
+                     'thumb':  program['img'],
+                     'content_lookup': False,
+                     'is_folder': False,
+                     'is_playable': True,
+                     'url': url,
+                     }
+        yield list_item
+
 def _list_programs(data, genre_title):
 
     mediatype = 'tvshow'

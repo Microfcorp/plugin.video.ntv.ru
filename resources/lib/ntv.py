@@ -292,6 +292,20 @@ class NTV(object):
         
         return json
     
+    def get_newss_maxi(self):
+        
+        r = self._http_request('news')
+        json = self._extract_json(r)
+        
+        return json['data']['chp']
+        
+    def get_newss_sport(self):
+        
+        r = self._http_request('news')
+        json = self._extract_json(r)
+        
+        return json['data']['sport']
+
     def get_newss(self):
         
         r = self._http_request('news')
