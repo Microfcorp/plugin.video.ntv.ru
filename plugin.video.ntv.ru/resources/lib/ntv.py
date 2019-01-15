@@ -14,9 +14,11 @@ from future.utils import PY3, iteritems
 if PY3:
     basestring = str
 
+
 class NTVApiError(Exception):
     """Custom exception"""
     pass
+
 
 class NTV(object):
 
@@ -29,6 +31,8 @@ class NTV(object):
                          'program': api_url + '/prog/#prog_id',
                          'video': api_url + '/v/#video_id',
                          'archive': api_url + '/prog/#prog_id/archive/#archive_id',
+                         'stream': 'http://www.ntv.ru/services/m/air',
+						 'news': api_url,
                          }
 
         self._headers = {'User-Agent': 'ru.ntv.client_4.5.1',
@@ -36,7 +40,7 @@ class NTV(object):
                          'Connection': 'keep-alive',
                          }
 
-    def _http_request( self, action, params=None, url_params=None ):
+    def _http_request(self, action, params=None, url_params=None):
         params = params or {}
 
         action_settings = self._actions.get(action)
@@ -78,7 +82,7 @@ class NTV(object):
         
         return result
 
-    def get_genres( self ):
+    def get_genres(self):
         r = self._http_request('main')
 
         json = self._extract_json(r)
@@ -90,7 +94,7 @@ class NTV(object):
 
             yield(item)
 
-    def browse_programs( self, genre_id, params=None ):
+    def browse_programs(self, genre_id, params=None):
         params = params or {}
 
         offset = int(params.get('offset', '0'))
@@ -117,22 +121,24 @@ class NTV(object):
     @staticmethod
     def _programs_list(programs, offset, limit):
         for program in programs[offset:(offset + limit)]:
+			
             annon = program['annotation']
-	    if program['archived'] == False:
-	    	annon = annon + '\n\n ' + program['outtime'].replace('\n', '')
-	    else:
-		annon = annon + '\n\n Показ прекращён'
+            
+            if program['archived'] == False:
+                annon = annon + '\n\n ' + program['outtime'].replace('\n', '')
+            else:
+                annon = annon + '\n\n Показ прекращён'
+            
             item = {'annotation': annon,
                     'id': program['id'],
-                    'img': program['preview'],
+                    'img': program['img'],
                     'shortcat': program['shortcat'],
                     'rating': NTV._get_rating(program['r']),
                     'title': program['title'],
-  		    'poster': program['img'],
                     }
             yield(item)
 
-    def browse_seasons( self, prog_id ):
+    def browse_seasons(self, prog_id):
 
         url_params = {'prog_id': prog_id}
 
@@ -170,7 +176,7 @@ class NTV(object):
                     }
             yield item
 
-    def browse_episodes( self, prog_id, archive_id ):
+    def browse_episodes(self, prog_id, archive_id):
 
         issues = []
 
@@ -200,7 +206,7 @@ class NTV(object):
 
         issues.sort(key=NTV._sort_by_ts)
 
-        result = {'count': issue_count,
+        result = {'count': len(issues),
                   'title': data['title'],
                   'type': data['type'],
                   'shortcat': data['shortcat'],
@@ -220,7 +226,7 @@ class NTV(object):
                 yield NTV._video_item(issue, video)
             else:
                 for part, video in enumerate(issue['video_list']):
-                    yield NTV._video_item(issue, video, part+1)
+                    yield NTV._video_item(issue, video, part + 1)
 
     @staticmethod
     def _video_item(issue, video, part=None):
@@ -232,15 +238,15 @@ class NTV(object):
                 'allowed': video['allowed'],
                 'img': video['img'],
                 'id': video['id'],
-                'timestamp': float(video['ts'])/1000
+                'timestamp': float(video['ts']) / 1000
                 ,
                 'duration': video['tt'],
                 'subtitles': video.get('subtitles'),
-                'episode': NTV._comScore_val(video['comScore'], 'ns_st_en'),
-                'season': NTV._comScore_val(video['comScore'], 'ns_st_sn'),
-                'genre': NTV._comScore_val(video['comScore'], 'ns_st_ge'),
+                'episode': None,  # NTV._comScore_val(video['comScore'], 'ns_st_en'),
+                'season': None,  # NTV._comScore_val(video['comScore'], 'ns_st_sn'),
+                'genre': None,  # NTV._comScore_val(video['comScore'], 'ns_st_ge'),
                 'part': part,
-                #'date': video['comScore']['ns_st_ddt'],
+                # 'date': video['comScore']['ns_st_ddt'],
                 }
         return item
 
@@ -253,7 +259,7 @@ class NTV(object):
         data = data or {}
         
         if data.get(key) is not None \
-          and data[key] !="*null" :
+          and data[key] != "*null" :
             value = data[key] 
         else:
             value = None
@@ -274,10 +280,40 @@ class NTV(object):
             issue = {}
         result = {'item': NTV._video_item(issue, info),
                   'video': info['video'],
-                  'hi_video': info.get('hi_video',''),
+                  'hi_video': info.get('hi_video', ''),
             }
         return result
+	
+    def get_live_info(self):
         
+        r = self._http_request('stream')
+        json = self._extract_json(r)
+        
+        
+        return json
+    
+    def get_newss_maxi(self):
+        
+        r = self._http_request('news')
+        json = self._extract_json(r)
+        
+        return json['data']['chp']
+        
+    def get_newss_sport(self):
+        
+        r = self._http_request('news')
+        json = self._extract_json(r)
+        
+        return json['data']['sport']
+
+    def get_newss(self):
+        
+        r = self._http_request('news')
+        json = self._extract_json(r)
+        
+        
+        return json['data']['topnews']
+    
     def _get_season(self, title):
         parts = title.split('-')
         if parts[-1].isdigit():
@@ -308,25 +344,3 @@ class NTV(object):
                   }
         
         return result
-
-if __name__ == '__main__':
-    import time
-    ntv = NTV()
-    genres = ntv.get_genres()
-    #genres = [{'id':10, 'title': 'Auto'}]
-    for genre in genres:
-        print('id-{0}, title-{1}'.format(genre['id'], genre['title']))
-        programs_info = ntv.browse_programs(genre['id'], {'limit': 1})
-        for program in programs_info['list']:
-            print('{0} {1}'.format(program['title'], program['rating']['rars']))
-            seasons_info = ntv.browse_seasons(program['shortcat'])
-            for season in seasons_info['list']:
-                print(season['title'])
-                episodes_info = ntv.browse_episodes(program['shortcat'], season['id'])
-                for episode in episodes_info['list']:
-                    print(episode['title'])
-                    print(episode['timestamp'])
-                    st_time = time.gmtime(float(episode['timestamp']))     
-                    print(time.strftime('%Y-%m-%d', st_time))
-                    video_info = ntv.get_video_info(episode['id'])
-                    print(video_info['video'])
